@@ -1,7 +1,9 @@
 package com.example.gold.firebasechat;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         database = FirebaseDatabase.getInstance();
-        userRef = database.getReference("bbs");
+        userRef = database.getReference("user");
 
         etId = (EditText) findViewById(R.id.etId);
         etPw = (EditText) findViewById(R.id.etPw);
@@ -36,14 +38,24 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String id = etId.getText().toString();
-                String pw = etPw.getText().toString();
+                final String id = etId.getText().toString();
+                final String pw = etPw.getText().toString();
 
                 userRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.getChildrenCount() > 0){
-                            String fbPw = dataSnapshot.child("pw").getValue().toString();
+                            String fbPw = dataSnapshot.child("password").getValue().toString();
+                            String name = dataSnapshot.child("name").getValue().toString();
+                            Log.w("MainActivity","pw = " + fbPw);
+                            if(fbPw.equals(pw)){
+                                Intent intent = new Intent(MainActivity.this, RoomListActivity.class);
+                                intent.putExtra("userid", id);
+                                intent.putExtra("username", name);
+                                startActivity(intent);
+                            }else{
+                                Toast.makeText(MainActivity.this, "비밀번호가 틀렸습니다.", Toast.LENGTH_LONG).show();
+                            }
                         }else {
                             Toast.makeText(MainActivity.this, "User가 없습니다", Toast.LENGTH_LONG).show();
                         }
