@@ -51,6 +51,7 @@ public class RoomListActivity extends AppCompatActivity {
         adapter = new ListAdapter(this, datas);
         listView.setAdapter(adapter);
 
+        // 아이템이 클릭되면 그걸 체크해서 RoomActivity로 넘긴다.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -70,6 +71,8 @@ public class RoomListActivity extends AppCompatActivity {
     ValueEventListener roomListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
+            //clear()를 하지않으면 기존에 있던 데이터에 snapshot형태의 뭉텅이 데이터가 붙어버리므로
+            // 기존의 datas를 clear 해준다
             datas.clear();
             for( DataSnapshot snapshot : dataSnapshot.getChildren() ){
                 Room room = new Room();
@@ -78,7 +81,7 @@ public class RoomListActivity extends AppCompatActivity {
 
                 datas.add(room);
             }
-            adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged(); // 어댑터에 변경되었다 알리면 어댑터는 화면을 갱신해준다.
         }
 
         @Override

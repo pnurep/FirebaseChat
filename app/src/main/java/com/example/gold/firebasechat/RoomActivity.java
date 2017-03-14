@@ -71,8 +71,8 @@ public class RoomActivity extends AppCompatActivity {
 
         // 데이터베이스 레퍼런스
         database = FirebaseDatabase.getInstance();
-        roomRef = database.getReference("chat").child(key);
-        roomRef.addValueEventListener(eventListener);
+        roomRef = database.getReference("chat").child(key); //없으면 생성
+        roomRef.addValueEventListener(eventListener); //리스너를 달아서
 
         btnSend.setOnClickListener(sendListener);
     }
@@ -142,6 +142,8 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder>{
         holder.msg.setText(msg.getMsg());
         if(!userid.equals(msg.getUserid())){
             holder.itemLayout.setGravity(Gravity.RIGHT);
+        }else {
+            holder.itemLayout.setGravity(Gravity.LEFT);
         }
     }
 

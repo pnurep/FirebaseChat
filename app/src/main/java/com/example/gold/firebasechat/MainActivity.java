@@ -28,24 +28,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        database = FirebaseDatabase.getInstance();
-        userRef = database.getReference("user");
+        database = FirebaseDatabase.getInstance(); //데이터베이스와 연결
+        userRef = database.getReference("user");   //데이터베이스의 레퍼런스(시작점, 노드) 설정
 
         etId = (EditText) findViewById(R.id.etId);
         etPw = (EditText) findViewById(R.id.etPw);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 final String id = etId.getText().toString();
                 final String pw = etPw.getText().toString();
 
+                //DB.1 파이어베이스로 child(id)레퍼런스에대한 쿼리를 날린다.
                 userRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    //DB.2 파이어베이스는 쿼리를 끝내면 스냅샷에 담아서 onDataChange를 콜백(호출)
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        //차일드가 있으면
                         if(dataSnapshot.getChildrenCount() > 0){
-                            String fbPw = dataSnapshot.child("password").getValue().toString();
+                            String fbPw = dataSnapshot.child("password").getValue().toString(); //getValue() -> 키말고 값 가져온다.
                             String name = dataSnapshot.child("name").getValue().toString();
                             Log.w("MainActivity","pw = " + fbPw);
                             if(fbPw.equals(pw)){
