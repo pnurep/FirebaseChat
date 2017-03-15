@@ -15,10 +15,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
     EditText etId, etPw;
-    Button btnLogin;
+    Button btnLogin, btnSignup;
 
     FirebaseDatabase database;
     DatabaseReference userRef;
@@ -35,8 +38,9 @@ public class MainActivity extends AppCompatActivity {
         etPw = (EditText) findViewById(R.id.etPw);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        btnSignup = (Button) findViewById(R.id.btnSignup);
 
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String id = etId.getText().toString();
@@ -73,5 +77,31 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+
+
+        //회원가입처리
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String id = etId.getText().toString();
+                final String pw = etPw.getText().toString();
+
+//                String msgKey = userRef.push().getKey();
+
+                DatabaseReference addRef = userRef.child(id);
+
+                Map<String, String> msgMap = new HashMap<>();
+                msgMap.put("password",pw);
+                msgMap.put("name",id);
+
+
+                addRef.setValue(msgMap);
+
+
+            }
+        });
+
+
+
     }
 }

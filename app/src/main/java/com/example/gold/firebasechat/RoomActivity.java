@@ -141,9 +141,9 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder>{
         holder.userName.setText(msg.getUsername());
         holder.msg.setText(msg.getMsg());
         if(!userid.equals(msg.getUserid())){
-            holder.itemLayout.setGravity(Gravity.RIGHT);
-        }else {
             holder.itemLayout.setGravity(Gravity.LEFT);
+        }else {
+            holder.itemLayout.setGravity(Gravity.RIGHT);
         }
     }
 

@@ -37,4 +37,12 @@
         android:layout_below="@+id/etPw"
         android:layout_alignParentStart="true"
         android:id="@+id/btnLogin" />
+
+    <Button
+        android:text="Sign Up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSignup"
+        android:layout_below="@+id/btnLogin"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

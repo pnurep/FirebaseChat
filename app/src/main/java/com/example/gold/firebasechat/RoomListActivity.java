@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,10 +22,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RoomListActivity extends AppCompatActivity {
 
+    Button btnMakeRoom;
+    EditText etRoomName;
     ListView listView;
     List<Room> datas = new ArrayList<>();
     ListAdapter adapter;
@@ -46,6 +52,22 @@ public class RoomListActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         roomRef = database.getReference("room");
+
+        etRoomName = (EditText) findViewById(R.id.etRoomName);
+
+        btnMakeRoom = (Button) findViewById(R.id.btnMakeRoom);
+        btnMakeRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String roomName = etRoomName.getText().toString();
+                DatabaseReference addRef = roomRef.child(roomName);
+                String key = roomRef.getKey();
+                Map<String, String> roomMap = new HashMap<>();
+                roomMap.put(key, roomName);
+                roomRef.setValue(roomMap);
+            }
+        });
+
 
         listView = (ListView) findViewById(R.id.listView);
         adapter = new ListAdapter(this, datas);
